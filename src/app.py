@@ -15,6 +15,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 aqm = AirQualityMonitor()
 
 scheduler = BackgroundScheduler()
+# TODO: Make query interval less hardcoded via config file
 scheduler.add_job(func=aqm.save_measurement_to_redis, trigger="interval", seconds=120)
 scheduler.start()
 atexit.register(lambda: scheduler.shutdown())
@@ -24,6 +25,7 @@ def pretty_timestamps(measurement):
     for x in measurement:
         timestamp = x['measurement']['timestamp']
         utcdt = datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S.%f')
+        # TODO: Make UTC default and local tz optional via config file
         nyc = ZoneInfo("America/New_York")
         nycdt = datetime.astimezone(utcdt, nyc)
         timestamp = datetime.strftime(nycdt, '%b %-d %-I:%M:%S %p')

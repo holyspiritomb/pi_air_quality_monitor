@@ -49,6 +49,7 @@
     <script>
         
         $.getJSON('/api/', function(data) {
+            // TODO: figure out how to show more than 30 data points at a time
             var ctx = document.getElementById('historicalChart').getContext('2d');
             var historicalChart = new Chart(ctx, {
                 type: 'line',
