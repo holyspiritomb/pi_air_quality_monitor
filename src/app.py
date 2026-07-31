@@ -1,5 +1,7 @@
 import os
 import time
+from zoneinfo import ZoneInfo
+from datetime import datetime, timezone
 from flask import Flask, request, jsonify, render_template
 from AirQualityMonitor import AirQualityMonitor
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -18,11 +20,15 @@ scheduler.start()
 atexit.register(lambda: scheduler.shutdown())
 
 def pretty_timestamps(measurement):
-	timestamps = []
-	for x in measurement:
-		timestamp = x['measurement']['timestamp']
-		timestamps += [timestamp.split('.')[0]]
-	return timestamps
+    timestamps = []
+    for x in measurement:
+        timestamp = x['measurement']['timestamp']
+        utcdt = datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S.%f')
+        nyc = ZoneInfo("America/New_York")
+        nycdt = datetime.astimezone(utcdt, nyc)
+        timestamp = datetime.strftime(nycdt, '%b %-d %-I:%M:%S %p')
+        timestamps += [timestamp]
+    return timestamps
 
 def reconfigure_data(measurement):
     """Reconfigures data for chart.js"""
