@@ -1,10 +1,21 @@
 # Raspberry Pi Air Quality Monitor
-A simple air quality monitoring service for the Raspberry Pi.
+A simple air quality monitoring service for the Raspberry Pi running Raspberry Pi OS.
 
 ## Installation
-Clone the repository and run the following:
+Clone the repository and run the following to install docker from its upstream repository:
 ```bash
 make install
+```
+
+## Building
+To build:
+```bash
+make build
+```
+
+To rebuild an existing container on-the-fly after making changes to `Dockerfile`, `docker-compose.yaml` or files in `/src`:
+```bash
+make rebuild
 ```
 
 ## Running
@@ -14,7 +25,7 @@ make run
 ```
 
 ## Architecture
-This project uses python, flask, docker-compose and redis to create a simple web server to display the latest historical values from the sensor.
+This project uses python, flask, docker compose and redis to create a simple web server to display the latest historical values from the sensor.
 
 ## Example Data
 Some example data you can get from the sensor includes the following:
@@ -30,6 +41,6 @@ Some example data you can get from the sensor includes the following:
 
 The sensor reads two particulate matter (PM) values.
 
-PM10 is a measure of particles less than 10 micrometers, whereas PM 2.5 is a measurement of finer particles, less than 2.5 micrometers.
+PM10 is a measure of particles less than 10 micrometers, whereas PM 2.5 is a measurement of finer particles, less than 2.5 micrometers. AQI (air quality index) is a composite value calculated based on these two direct measurements.
 
 Different particles are from different sources, and can be hazardous to different parts of the respiratory system.
