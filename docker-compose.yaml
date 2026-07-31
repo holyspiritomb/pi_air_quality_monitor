@@ -4,6 +4,7 @@ services:
     image: redis
     volumes:
       - ./data/redis:/data
+    restart: unless-stopped
   web:
     build: .
     image: pi-air-quality-monitor
@@ -18,3 +19,4 @@ services:
       - "redis"
     ports:
       - "8000:8000"
+    restart: unless-stopped
