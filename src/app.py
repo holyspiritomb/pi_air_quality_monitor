@@ -35,6 +35,7 @@ def pretty_timestamps(measurement):
 def reconfigure_data(measurement):
     """Reconfigures data for chart.js"""
     current = int(time.time())
+    # TODO: make number of measurements displayed configurable
     measurement = measurement[:30]
     measurement.reverse()
     return {
