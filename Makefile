@@ -1,9 +1,9 @@
-PI_IP_ADDRESS=10.0.0.172
+PI_IP_ADDRESS=10.0.0.36
 PI_USERNAME=pi
 
 .PHONY: run
 run:
-	@docker-compose up
+	@docker compose up -d
 
 .PHONY: install
 install:
@@ -19,4 +19,4 @@ shell:
 
 .PHONY: build
 build:
-	@docker-compose build
+	@docker compose build
