@@ -18,6 +18,7 @@ class AirQualityMonitor():
     def get_measurement(self):
         self.data = []
         for index in range(0,10):
+            # FIX: in case of sds011lib.exceptions.IncompleteReadException, tell the sensor to sleep
             datum = self.ser.query()
             self.data.append(datum)
         self.pmtwo = datum.pm25
