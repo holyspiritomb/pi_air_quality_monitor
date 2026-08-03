@@ -23,4 +23,4 @@ build:
 
 .PHONY: rebuild
 rebuild:
-	@docker stop pi_air_quality_monitor-web-1 && docker stop pi_air_quality_monitor-redis-1 && docker compose build && docker compose up -d
+	@docker compose build && docker compose up
