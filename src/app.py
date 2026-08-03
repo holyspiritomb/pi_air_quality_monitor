@@ -1,7 +1,7 @@
 import os
 import time
 from zoneinfo import ZoneInfo
-from datetime import datetime, timezone
+from datetime import datetime
 from flask import Flask, request, jsonify, render_template
 from AirQualityMonitor import AirQualityMonitor
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -14,6 +14,7 @@ cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 aqm = AirQualityMonitor()
 
+# FIX: In the event of IncompleteReadException, log it and stop the scheduler
 scheduler = BackgroundScheduler()
 # TODO: Make query interval less hardcoded via config file
 scheduler.add_job(func=aqm.save_measurement_to_redis, trigger="interval", seconds=120)
