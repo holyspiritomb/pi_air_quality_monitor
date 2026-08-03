@@ -27,9 +27,9 @@ def pretty_timestamps(measurement):
         timestamp = x['measurement']['timestamp']
         utcdt = datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S.%f')
         # TODO: Make UTC default and local tz optional via config file
-        nyc = ZoneInfo("America/New_York")
-        nycdt = datetime.astimezone(utcdt, nyc)
-        timestamp = datetime.strftime(nycdt, '%b %-d %-I:%M:%S %p')
+        localzone = ZoneInfo("America/New_York")
+        localdt = datetime.astimezone(utcdt, localzone)
+        timestamp = datetime.strftime(localdt, '%Y-%m-%d %H:%M %Z')
         timestamps += [timestamp]
     return timestamps
 
