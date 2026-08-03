@@ -46,21 +46,21 @@ def reconfigure_data(measurement):
             'data': [x['measurement']['aqi'] for x in measurement],
             'backgroundColor': '#181d27',
             'borderColor': '#181d27',
-            'borderWidth': 1,
+            'borderWidth': 1
         },
         'pm10': {
             'label': 'pm10',
             'data': [x['measurement']['pm10'] for x in measurement],
             'backgroundColor': '#cc0000',
             'borderColor': '#cc0000',
-            'borderWidth': 1,
+            'borderWidth': 1
         },
         'pm2': {
             'label': 'pm2.5',
             'data': [x['measurement']['pm2.5'] for x in measurement],
             'backgroundColor': '#42C0FB',
             'borderColor': '#42C0FB',
-            'borderWidth': 1,
+            'borderWidth': 1
         },
     }
 
