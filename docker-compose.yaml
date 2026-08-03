@@ -15,6 +15,7 @@ services:
         - PORT=8000
     volumes:
       - ./src:/code
+      - /etc/timezone:/etc/timezone:ro
     depends_on:
       - "redis"
     ports:
