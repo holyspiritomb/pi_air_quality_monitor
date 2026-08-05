@@ -15,9 +15,12 @@ services:
         - PORT=8000
     volumes:
       - ./src:/code
-      - /etc/timezone:/etc/timezone:ro
     depends_on:
       - "redis"
     ports:
       - "8000:8000"
     restart: unless-stopped
+    develop:
+      watch:
+        - path: ./src
+          action: rebuild
