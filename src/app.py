@@ -21,17 +21,6 @@ scheduler.add_job(func=aqm.save_measurement_to_redis, trigger="interval", second
 scheduler.start()
 atexit.register(lambda: scheduler.shutdown())
 
-def pretty_timestamps(measurement):
-    timestamps = []
-    for x in measurement:
-        timestamp = x['measurement']['timestamp']
-        utcdt = datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S.%f')
-        # TODO: Make UTC default and local tz optional via config file
-        localzone = ZoneInfo("America/New_York")
-        localdt = datetime.astimezone(utcdt, localzone)
-        timestamp = datetime.strftime(localdt, '%Y-%m-%d %H:%M %Z')
-        timestamps += [timestamp]
-    return timestamps
 
 def reconfigure_data(measurement):
     """Reconfigures data for chart.js"""
@@ -40,10 +29,11 @@ def reconfigure_data(measurement):
     measurement = measurement[:30]
     measurement.reverse()
     return {
-        'labels': pretty_timestamps(measurement),
+        'labels': [x['measurement']['timestamp'] for x in measurement],
         'aqi': {
             'label': 'aqi',
             'data': [x['measurement']['aqi'] for x in measurement],
+            'parsing': 'false',
             'backgroundColor': '#181d27',
             'borderColor': '#181d27',
             'borderWidth': 1
@@ -51,6 +41,7 @@ def reconfigure_data(measurement):
         'pm10': {
             'label': 'pm10',
             'data': [x['measurement']['pm10'] for x in measurement],
+            'parsing': 'false',
             'backgroundColor': '#cc0000',
             'borderColor': '#cc0000',
             'borderWidth': 1
@@ -58,6 +49,7 @@ def reconfigure_data(measurement):
         'pm2': {
             'label': 'pm2.5',
             'data': [x['measurement']['pm2.5'] for x in measurement],
+            'parsing': 'false',
             'backgroundColor': '#42C0FB',
             'borderColor': '#42C0FB',
             'borderWidth': 1
@@ -75,7 +67,6 @@ def index():
 
 @app.route('/api/')
 @cross_origin()
-
 def api():
     """Returns historical data from the sensor"""
     context = {
