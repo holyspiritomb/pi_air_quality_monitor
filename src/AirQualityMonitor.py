@@ -1,8 +1,7 @@
 import json
 import os
 import time
-import datetime
-import serial
+from datetime import datetime
 import redis
 import aqi
 from sds011lib import SDS011QueryReader
@@ -13,12 +12,11 @@ redis_client = redis.StrictRedis(host=os.environ.get('REDIS_HOST'), port=6379, d
 class AirQualityMonitor():
 
     def __init__(self):
-        self.ser = SDS011QueryReader('/dev/ttyUSB0')
+        self.ser = SDS011QueryReader('/dev/ttyUSB0', 5)
 
     def get_measurement(self):
         self.data = []
-        for index in range(0,10):
-            # FIX: in case of sds011lib.exceptions.IncompleteReadException, tell the sensor to sleep
+        for index in range(0, 3):
             datum = self.ser.query()
             self.data.append(datum)
         self.pmtwo = datum.pm25
@@ -28,12 +26,12 @@ class AirQualityMonitor():
         self.aqi = float(myaqi)
 
         self.meas = {
-            "timestamp": datetime.datetime.now(),
+            "timestamp": datetime.now(),
             "pm2.5": self.pmtwo,
             "pm10": self.pmten,
             "aqi": self.aqi,
         }
-        
+
         return {
             'time': int(time.time()),
             'measurement': self.meas
