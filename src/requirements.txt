@@ -1,9 +1,7 @@
-sds011lib
+sds011lib==0.4.0
 ipython
-flask
-redis
-# APScheduler==3.7.0
+Flask==3.1.3
+redis==8.1.0
 APScheduler==3.11.2
-flask-cors
+flask-cors==6.0.5
 python-aqi==0.6.1
-
