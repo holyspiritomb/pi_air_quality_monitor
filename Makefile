@@ -23,4 +23,8 @@ build:
 
 .PHONY: rebuild
 rebuild:
-	@docker compose build && docker compose up
+	@docker compose build
+
+.PHONY: dev
+dev:
+	@docker compose watch web
