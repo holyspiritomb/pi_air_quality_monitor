@@ -24,7 +24,6 @@ wa = WeatherApi()
 
 # FIX: In the event of IncompleteReadException, log it and stop the scheduler
 scheduler = BackgroundScheduler()
-# TODO: Make query interval less hardcoded via config file
 scheduler.add_job(func=aqm.save_measurement_to_redis, trigger="interval", seconds=INTERVAL, id="take_measurement")
 if WA_KEY:
     scheduler.add_job(func=wa.save_measurement_to_redis, trigger='cron', minute='*/15', id="fetch_outside")
