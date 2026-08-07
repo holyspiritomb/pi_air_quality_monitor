@@ -4,3 +4,4 @@ env
 data/
 venv/
 .venv
+settings.env

@@ -6,6 +6,7 @@ services:
       - ./data/redis:/data
     restart: unless-stopped
   web:
+    env_file: "settings.env"
     build: .
     image: pi-air-quality-monitor
     devices:
