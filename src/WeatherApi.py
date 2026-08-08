@@ -24,7 +24,7 @@ class WeatherAPIError(Exception):
 class WeatherApi():
 
     def __init__(self):
-        print("WeatherAPI")
+        print("WeatherAPI initializing")
 
     def get_current_weather(self):
         """
