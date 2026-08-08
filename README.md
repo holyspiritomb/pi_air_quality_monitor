@@ -15,7 +15,7 @@ make build
 
 To rebuild an existing container on-the-fly after making changes to `Dockerfile`, `docker-compose.yaml` or files in `/src`:
 ```bash
-make rebuild
+make rebuild && make run
 ```
 
 ## Running
