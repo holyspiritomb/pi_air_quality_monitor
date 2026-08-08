@@ -25,6 +25,7 @@ wa = WeatherApi()
 # FIX: In the event of IncompleteReadException, log it and stop the scheduler
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=aqm.save_measurement_to_redis, trigger="interval", seconds=INTERVAL, id="take_measurement")
+# Don't schedule the job of fetching WeatherAPI data unless there is a key
 if WA_KEY:
     scheduler.add_job(func=wa.save_measurement_to_redis, trigger='cron', minute='*/15', id="fetch_outside")
 scheduler.start()
@@ -113,12 +114,15 @@ def outside():
     """Outside page for the application"""
     if WA_KEY:
         context = {
+            # Sensor data is used to determine x-axis limits
             'historical': reconfigure_data(aqm.get_last_n_measurements()),
             'outside': reconfigure_outside_data(wa.get_last_n_measurements())
         }
+        # Only render if key is actually present.
+        return render_template('outside.html', context=context)
     else:
-        context = False
-    return render_template('outside.html', context=context)
+        return False
+    # return render_template('outside.html', context=context)
 
 
 @app.route('/api/')
