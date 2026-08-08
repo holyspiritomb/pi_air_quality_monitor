@@ -29,13 +29,18 @@
 <body>
     <div class="container">
         <div class="row">
-            <div class="col-12">
+            <div class="col-12 my-3 text-center">
                 <h1>Air Quality Monitor</h1>
             </div>
         </div>
         <div class="row">
             <div class="col-12">
                 <canvas id="historicalChart" width="400" height="200"></canvas>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 text-center">
+                <button id="btn-update" class="btn btn-primary m-1">Refresh Page</button>
             </div>
         </div>
     </div>
@@ -99,6 +104,12 @@
                 }
             });
         })
+
+        var pageRefresh = async () => {
+            window.location.reload();
+        }
+        
+        $("#btn-update").on("click", pageRefresh);
         </script>
 
 </body>
