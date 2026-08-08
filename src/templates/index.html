@@ -41,6 +41,7 @@
         <div class="row">
             <div class="col-12 text-center">
                 <button id="btn-update" class="btn btn-primary m-1">Refresh Page</button>
+                <button id="btn-measure" class="btn btn-warning m-1">Measure Now</button>
             </div>
         </div>
     </div>
@@ -105,11 +106,23 @@
             });
         })
 
-        var pageRefresh = async () => {
+        const pageRefresh = async () => {
             window.location.reload();
         }
-        
+
+        const measureNow = async () => {
+            console.log("Measure Now button clicked.");
+            const response = await fetch("/api/now?save=1");
+            if (!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+
+            const result = await response.json();
+            console.log("measuring response...", result);
+        }
+
         $("#btn-update").on("click", pageRefresh);
+        $("#btn-measure").on("click", measureNow);
         </script>
 
 </body>

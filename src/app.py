@@ -144,15 +144,16 @@ def api():
 @app.route('/api/now/')
 def api_now():
     """Returns latest data from the sensor"""
-    if not WA_KEY:
-        context = {
-            'current': aqm.get_measurement()
-        }
-    else:
-        context = {
-            'current': aqm.get_measurement(),
-            'outside': wa.get_current_weather()
-        }
+    meas = aqm.get_measurement()
+
+    save = request.args.get('save')
+
+    if save == '1':
+        aqm.save_measurement_to_redis(meas)
+
+    context = {
+        'current': meas
+    }
     return jsonify(context)
 
 
