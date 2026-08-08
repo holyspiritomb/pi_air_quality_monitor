@@ -25,3 +25,5 @@ services:
       watch:
         - path: ./src
           action: rebuild
+        - path: ./settings.env
+          action: rebuild
