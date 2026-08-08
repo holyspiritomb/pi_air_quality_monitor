@@ -1,5 +1,5 @@
 # Raspberry Pi Air Quality Monitor
-A simple air quality monitoring service for the Raspberry Pi running Raspberry Pi OS.
+A simple air quality monitoring service for the Raspberry Pi running Raspberry Pi OS. Optionally (if the user provides a free WeatherAPI key and a location), outdoor particulate matter data can be fetched from the internet and tracked.
 
 ## Installation
 Clone the repository and run the following to install docker from its upstream repository:
