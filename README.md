@@ -44,3 +44,6 @@ The sensor reads two particulate matter (PM) values.
 PM10 is a measure of particles less than 10 micrometers, whereas PM 2.5 is a measurement of finer particles, less than 2.5 micrometers. AQI (air quality index) is a composite value calculated based on these two direct measurements.
 
 Different particles are from different sources, and can be hazardous to different parts of the respiratory system.
+
+## Prior Arts
+Thank you to @whirledsol, specifically for the implementation of a "measure now" button in [their fork](https://github.com/whirledsol/pi-air-quality-monitor)
