@@ -1,110 +1,30 @@
-<!doctype html>
-<html lang="en">
+{% extends 'base.html' %}
+{% block header %}
+{% block title %}Indoor Air Quality Monitor{% endblock %}
+{% endblock %}
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <title>Air Quality Monitor</title>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css" integrity="sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-<link rel="preconnect" href="https://rsms.me/">
-<link rel="stylesheet" href="https://rsms.me/inter/inter.css">
-<style>
-:root {
-  font-family: Inter, sans-serif;
-  font-feature-settings: 'liga' 1, 'calt' 1; /* fix for Chrome */
-  --bs-font-sans-serif: Inter, sans-serif;
-}
-@supports (font-variation-settings: normal) {
-  :root {
-      font-family: InterVariable, sans-serif;
-      --bs-font-sans-serif: InterVariable, sans-serif;
-      font-feature-settings: 'cv01' on, 'cv02' on, 'cv03' on, 'cv04' on, 'cv05' on, 'cv07' on, 'cv08' on, 'cv09' on, 'cv10' on;
-  }
-}
-</style>
-</head>
-<body>
-    <div class="container">
-        <div class="row">
-            <div class="col-12 my-3 text-center">
-                <h1>Air Quality Monitor</h1>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <canvas id="historicalChart" width="400" height="200"></canvas>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12 text-center">
-                <button id="btn-update" class="btn btn-primary m-1">Refresh Page</button>
-                <button id="btn-measure" class="btn btn-warning m-1">Measure Now</button>
-            </div>
+{% block buttons %}
+    <div class="row">
+        <div class="col-12 text-center">
+            <button id="btn-update" class="btn btn-primary m-1">Refresh Page</button>
+            <button id="btn-measure" class="btn btn-warning m-1">Measure Now</button>
         </div>
     </div>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.bundle.min.js"
-            integrity="sha512-HvOjJrdwNpDbkGJIG2ZNqDlVqMo77qbs4Me4cah0HoDrfhrbA+8SBlZn1KrvAQw7cILLPFJvdwIgphzQmMm+Pw==" crossorigin="anonymous" referrerpolicy="no-referrer">
-        </script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+{% endblock %}
 
-    <!-- TODO: refactor chart rendering so it is server-side -->
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.0/chart.umd.min.js" integrity="sha512-Y51n9mtKTVBh3Jbx5pZSJNDDMyY+yGe77DGtBPzRlgsf/YLCh13kSZ3JmfHGzYFCmOndraf0sQgfM654b7dJ3w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js" integrity="sha512-UXumZrZNiOwnTcZSHLOfcTs0aos2MzBWHXOHOuB0J/R44QB0dwY5JgfbvljXcklVf65Gc4El6RjZ+lnwd2az2g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/2.2.0/chartjs-plugin-zoom.min.js" integrity="sha512-FRGbE3pigbYamZnw4+uT4t63+QJOfg4MXSgzPn2t8AWg9ofmFvZ/0Z37ZpCawjfXLBSVX2p2CncsmUH2hzsgJg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/date-fns/4.1.0/cdn.min.js" integrity="sha512-bz58Sg3BAWMEMPTH0B8+pK/+5Qfqq6b2Ho2G4ld12x4fiUVqpY8jSbN/73qpBQYFLU4QnKVL5knUm4uqcJGLVw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-adapter-date-fns/3.0.0/chartjs-adapter-date-fns.min.js" integrity="sha512-rwTcVAtpAmT3KnwlKHOqeV7ETOTUdf0uYbR4YGf3149X+X+Rx3tgJOOhqFVsyNl0oMgJSPqAOoFuf57WNN0RYA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+{% block chartscript %}
     <script>
         $.getJSON('/api/', function(data) {
-            var ctx = document.getElementById('historicalChart').getContext('2d');
+            var ctx = document.getElementById('chart').getContext('2d');
             var historicalChart = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: data.historical.labels,
                     datasets: [data.historical.aqi, data.historical.pm10, data.historical.pm2]
                 },
-                options: {
-                    elements: {
-                        line: {
-                            borderwidth: 1
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        },
-                        x: {
-                            type: 'time',
-                        }
-                    },
-                    plugins: {
-                        zoom: {
-                            events: ['touchstart', 'touchmove'],
-                            pan: {
-                                enabled: true,
-                                mode: 'x'
-                            },
-                            zoom: {
-                                wheel: {
-                                    enabled: true
-                                },
-                                pinch: {
-                                    enabled: true
-                                },
-                                mode: 'x',
-                                limits : {
-                                    y: {min: 0, max: 'original'}
-                                }
-                            }
-                        },
-                    }
-                }
+                options: chartOptions(data.historical.labels, 3),
             });
-        })
+        });
 
         const pageRefresh = async () => {
             window.location.reload();
@@ -124,6 +44,4 @@
         $("#btn-update").on("click", pageRefresh);
         $("#btn-measure").on("click", measureNow);
         </script>
-
-</body>
-</html>
+{% endblock %}
