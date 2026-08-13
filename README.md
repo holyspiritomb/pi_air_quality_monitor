@@ -1,4 +1,7 @@
 # Raspberry Pi Air Quality Monitor
+
+[![Crafted by Human](https://madebyhuman.iamjarl.com/badges/crafted-black.svg)](https://madebyhuman.iamjarl.com)
+
 A simple air quality monitoring service for the Raspberry Pi running Raspberry Pi OS, connected to an SDS011 particulate matter sensor. Optionally (if the user provides a free WeatherAPI key and a location, or an OpemWeather key and coordinates), outdoor particulate matter data can be fetched from the internet and tracked.
 
 ## Installation
